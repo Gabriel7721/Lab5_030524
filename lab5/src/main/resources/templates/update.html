@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Create Page</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <style>
+            .button {
+                background-color: #007BFF;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                padding: 2px 8px;
+                cursor: pointer;
+                font-family: Arial, sans-serif;
+                font-size: 14px;
+                text-decoration: none;
+            }
+            .button:hover {
+                background-color: #0056b3;
+            }
+            .button:active {
+                transform: translateY(1px);
+            }
+            .error-message {
+                color: red;
+            }
+        </style>
+
+    </head>
+    <body>
+        <h1 style="color: goldenrod">Update Product System</h1>
+        <!-- Action to @PostMapping("/create") -->
+        <form th:action="@{/save}" th:object="${product}" method="POST" onsubmit="return validateDate()" enctype="multipart/form-data">
+            <table border="1" cellspacing="3">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Category Name</td>
+                        <td>
+                            <select th:field="*{categoryid}">
+                                <option value="">--Selected--</option>
+                                <option th:each="c : ${category}" th:value="${c.id}" th:text="${c.id} + ' - ' + ${c.name}"></option>
+                            </select>
+                            <div th:if="${#fields.hasErrors('categoryid')}" th:errors="*{categoryid}" style="color: red"></div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Product ID</td>
+                        <td><input type="text" th:field="*{id}" readonly="true"/></td>
+                    </tr>
+
+                    <tr>
+                        <td>Product Name</td>
+                        <td>
+                            <input type="text" th:field="*{name}" />
+                            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Price</td>
+                        <td>
+                            <input type="number" th:field="*{price}" />
+                            <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" style="color: red"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Quantity</td>
+                        <td>
+                            <input type="number" th:field="*{quantity}" />
+                            <div th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" style="color: red"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Product Image</td>
+                        <td>
+                            <img th:src="@{'/images/' + ${product.photo}}" style="width:55px; height:auto;" />
+                            <input type="file" th:field="*{photo}" />
+                            <div th:if="${#fields.hasErrors('photo')}" th:errors="*{photo}" style="color: red"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Button</td>
+                        <td>
+                            <a th:href="@{/delete/{id}(id=${product.id})}" onclick="return confirm('Are You Sure to Delete')" class="button">Delete</a> ||
+                            <input type="submit" value="Update" onclick="return confirm('Are you sure to update?')" class="button" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </body>
+</html>

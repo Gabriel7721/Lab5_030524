@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Create Page</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    </head>
+    <body>
+        <h1 style="color: goldenrod">Create Product System</h1>
+        <!-- Action to @PostMapping("/create") -->
+        <form th:action="@{/createNew}" th:object="${product}" method="POST" onsubmit="return validateDate()" enctype="multipart/form-data">
+            <table border="1" cellspacing="3">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Category Name</td>
+                        <td>
+                            <select th:field="*{categoryid}">
+                                <option value="">--Selected--</option>
+                                <option th:each="c : ${category}" th:value="${c.id}" th:text="${c.id} + ' - ' + ${c.name}"></option>
+                            </select>
+                            <div th:if="${#fields.hasErrors('categoryid')}" th:errors="*{categoryid}" style="color: red"></div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Product Name</td>
+                        <td>
+                            <input type="text" th:field="*{name}" />
+                            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red"></div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>Price</td>
+                        <td>
+                            <input type="text" th:field="*{price}" />
+                            <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" style="color: red"></div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>Quantity</td>
+                        <td>
+                            <input type="text" th:field="*{quantity}" />
+                            <div th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" style="color: red"></div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>Product Image</td>
+                        <td>
+                            <input type="file" th:field="*{photo}" />
+                            <div th:if="${#fields.hasErrors('photo')}" th:errors="*{photo}" style="color: red"></div>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>Button</td>
+                        <td><input type="submit" value="Create" onclick="return confirm('Are you sure to create?')" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </body>
+</html>

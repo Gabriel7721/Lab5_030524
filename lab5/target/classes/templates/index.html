@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>index page</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <h1 style="color: goldenrod">Product Management System</h1>
+
+        <!--search-->
+        <form th:action="@{/search}" method="post">
+
+
+            <table border="1" width="1" cellspacing="1" cellpadding="1">
+                <thead>
+                    <tr>
+                        <th>Minimum</th>
+                        <th>Maximum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="number" name="min" th:value="${min}"></td>
+                        <td><input type="number" name="max" th:value="${max}"></td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+
+            <input type="submit" name="search" value="Search">
+        </form>
+
+        <!--Filter-->
+        <form th:action="@{/filter}" method="post">
+            <select name="id">
+                <option th:value="0">--Selected--</option>
+                <option th:each="c : ${category}" th:value="${c.id}" th:text="${c.id} + ' - ' + ${c.name}"></option>
+            </select>
+
+            <input type="submit" name="search" value="Filter">
+        </form>
+
+        <!--create-->
+        <h6>
+            <a th:href="@{/create}">Create New Product</a>
+        </h6>
+
+        <table border="1" cellspacing="2">
+            <thead>
+                <tr>
+
+                    <th>#ID</th>
+                    <th>Category</th>
+                    <th>Product Name</th>
+                    <th>($) Price</th>
+                    <th>(pcs.) Quantity</th>
+                    <th>Image</th>
+                    <th>(^_^) Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="p : ${list}">
+                    <td th:text="${p.id}"></td>
+                    <td th:text="${p.getCategoryid().getName}"></td>
+                    <td th:text="${p.name}"></td>
+                    <td th:text="${p.price}"></td>
+                    <td th:text="${p.quantity}"></td>
+                    <td>
+                        <img th:src="@{'/images/' + ${p.getPhoto()}}" width="79" height="auto" alt="alt"/>
+                    </td>
+                    <td>
+                        <a th:href="@{/edit/{id}(id=${p.id})}" onclick="return confirm('You will be move to Product Details Page? Will you accept ?')">Update or Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+    </body>
+</html>
